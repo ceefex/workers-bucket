@@ -24,7 +24,7 @@ Features:
 
 ## Requirements
 
-- Node.js `24.21.x`
+- Node.js `24.18.0` or newer
 - pnpm `12.3.4`
 - An existing R2 bucket in your Cloudflare account
 
