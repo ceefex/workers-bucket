@@ -9,6 +9,9 @@
 	"workers_dev": true,
 	"preview_urls": true,
 	"compatibility_date": "2026-09-23",
+	"cache": {
+		"enabled": true
+	},
 	"observability": {
 		"enabled": true
 	},

@@ -79,6 +79,8 @@ Bindings and default values are defined in `wrangler.jsonc`:
 
 On the first deployment, `CORS_CONFIG` and `MIME_TYPES` receive their defaults from `wrangler.jsonc`. `keep_vars: true` preserves runtime values changed through the Dashboard on subsequent Wrangler deployments. These variables are not build variables and do not select the bucket.
 
+Workers Cache is enabled for HTTP `GET` and `HEAD` requests. Object responses use their R2 `Cache-Control` metadata when present; otherwise, the Worker defaults to `public, max-age=604800` (seven days). Replacing an object at the same URL may therefore take up to seven days to appear from cache unless the cache is purged. Prefer versioned URLs for frequently updated assets.
+
 ## Commands
 
 | Command | Purpose |
