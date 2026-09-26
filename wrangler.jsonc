@@ -10,7 +10,53 @@
 	"observability": {
 		"enabled": true
 	},
-	"upload_source_maps": true
+	"upload_source_maps": true,
+	"keep_vars": true,
+	"r2_buckets": [
+		{
+			"binding": "R2_BUCKET",
+			"bucket_name": "workers-bucket"
+		}
+	],
+	"vars": {
+		"CORS_CONFIG": {
+			"allowedOrigins": [
+				"http://localhost",
+				"https://localhost",
+				"http://localhost:*",
+				"https://localhost:*",
+				"https://dyzulk.com",
+				"https://*.dyzulk.com",
+				"https://der.my.id",
+				"https://*.der.my.id",
+				"https://files.nihonbuzz.org",
+				"https://*.files.nihonbuzz.org"
+			],
+			"allowedMethods": ["GET", "HEAD", "OPTIONS"],
+			"allowedHeaders": ["*"],
+			"maxAge": 86400
+		},
+		"MIME_TYPES": {
+			"html": "text/html; charset=utf-8",
+			"txt": "text/plain; charset=utf-8",
+			"css": "text/css; charset=utf-8",
+			"js": "application/javascript; charset=utf-8",
+			"mjs": "application/javascript; charset=utf-8",
+			"json": "application/json; charset=utf-8",
+			"svg": "image/svg+xml",
+			"png": "image/png",
+			"jpg": "image/jpeg",
+			"jpeg": "image/jpeg",
+			"gif": "image/gif",
+			"ico": "image/x-icon",
+			"webp": "image/webp",
+			"woff": "font/woff",
+			"woff2": "font/woff2",
+			"ttf": "font/ttf",
+			"otf": "font/otf",
+			"eot": "application/vnd.ms-fontobject"
+		}
+	}
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

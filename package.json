@@ -1,9 +1,28 @@
 {
 	"name": "workers-bucket",
 	"version": "0.0.0",
+	"license": "MIT",
 	"private": true,
+	"packageManager": "pnpm@12.3.4",
+	"engines": {
+		"node": "24.21.x",
+		"pnpm": "12.3.4"
+	},
+	"devEngines": {
+		"runtime": {
+			"name": "node",
+			"version": "24.21.0",
+			"onFail": "error"
+		},
+		"packageManager": {
+			"name": "pnpm",
+			"version": "12.3.4",
+			"onFail": "error"
+		}
+	},
 	"scripts": {
-		"deploy": "wrangler deploy",
+		"build": "node scripts/build.mjs",
+		"deploy": "node scripts/deploy.mjs",
 		"dev": "wrangler dev",
 		"start": "wrangler dev",
 		"test": "vitest",
@@ -11,6 +30,7 @@
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-plugin": "^1.0.0",
+		"jsonc-parser": "^3.3.1",
 		"typescript": "^5.5.2",
 		"vitest": "~4.1.0",
 		"wrangler": "^4.140.0"
