@@ -46,7 +46,7 @@ Build and deployment are separate stages:
 1. `pnpm run build` reads `wrangler.jsonc`, selects the bucket name, and generates `wrangler.deploy.jsonc`. It does not upload the Worker.
 2. `pnpm run deploy` runs Wrangler with the generated configuration. Run the build first.
 
-To change the bucket without modifying the repository, set `R2_BUCKET_NAME` as a **Build variable** in Cloudflare Workers Builds. Do not set it as a Worker runtime variable.
+To change the bucket without modifying the repository, set `R2_BUCKET_NAME` as a **Build variable** in Cloudflare Workers Builds. To add custom domains, set the optional `CUSTOM_DOMAINS` build variable to a comma-separated list of hostnames. Do not include URL schemes. These are build variables, not Worker runtime variables.
 
 Configure Workers Builds as follows:
 
@@ -54,7 +54,7 @@ Configure Workers Builds as follows:
 | --- | --- |
 | Build command | `pnpm run build` |
 | Deploy command | `pnpm run deploy` |
-| Build variable | `R2_BUCKET_NAME=<bucket-name>` |
+| Build variables | `R2_BUCKET_NAME=<bucket-name>` and optionally `CUSTOM_DOMAINS=files.example.com,cdn.example.com` |
 
 Run the same flow locally:
 
@@ -63,7 +63,7 @@ R2_BUCKET_NAME=assets-prod pnpm run build
 pnpm run deploy
 ```
 
-If `R2_BUCKET_NAME` is unset, the build uses the default `workers-bucket`. If the variable is set but empty, the build fails to prevent deployment to an unintended bucket. `wrangler.deploy.jsonc` is generated during the build and is ignored by Git.
+If `R2_BUCKET_NAME` is unset, the build uses the default `workers-bucket`. If the variable is set but empty, the build fails to prevent deployment to an unintended bucket. If `CUSTOM_DOMAINS` is unset, no custom-domain routes are added; when set, each hostname is added as a Wrangler custom-domain route. The domains must be eligible custom domains in your Cloudflare account. `wrangler.deploy.jsonc` is generated during the build and is ignored by Git.
 
 ## Runtime Configuration
 
@@ -73,6 +73,7 @@ Bindings and default values are defined in `wrangler.jsonc`:
 | --- | --- | --- |
 | `R2_BUCKET` | R2 binding | The R2 object binding used by the Worker. Default bucket: `workers-bucket`. |
 | `R2_BUCKET_NAME` | Workers Builds build variable | Selects the bucket during the build and updates the binding in the generated configuration. |
+| `CUSTOM_DOMAINS` | Optional Workers Builds build variable | Comma-separated hostnames added as custom-domain routes in the generated deployment configuration. |
 | `CORS_CONFIG` | JSON runtime variable | Allowed origins, methods, headers, and preflight cache duration. |
 | `MIME_TYPES` | JSON runtime variable | Maps file extensions to Content-Type values. |
 

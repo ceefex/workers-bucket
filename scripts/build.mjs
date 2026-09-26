@@ -25,5 +25,31 @@ if (typeof bucketName !== "string" || bucketName.length === 0) {
 }
 
 config.r2_buckets[bindingIndex] = { ...bindings[bindingIndex], bucket_name: bucketName };
+
+const requestedDomains = process.env.CUSTOM_DOMAINS;
+if (requestedDomains !== undefined) {
+	if (requestedDomains.trim().length === 0) {
+		throw new Error("CUSTOM_DOMAINS is empty. Set a comma-separated domain list or omit it.");
+	}
+
+	const customDomains = requestedDomains.split(",").map((domain) => domain.trim());
+	if (customDomains.some((domain) => domain.length === 0)) {
+		throw new Error("CUSTOM_DOMAINS must not contain empty entries.");
+	}
+
+	const routes = config.routes ?? [];
+	if (!Array.isArray(routes)) throw new Error("routes in wrangler.jsonc must be an array");
+
+	const existingDomains = new Set(
+		routes
+			.filter((route) => typeof route === "object" && route?.custom_domain === true)
+			.map((route) => route.pattern),
+	);
+	for (const pattern of new Set(customDomains)) {
+		if (!existingDomains.has(pattern)) routes.push({ pattern, custom_domain: true });
+	}
+	config.routes = routes;
+}
+
 await writeFile(outputPath, `${JSON.stringify(config, null, 2)}\n`);
 console.log(`Generated wrangler.deploy.jsonc using R2 bucket: ${bucketName}`);
